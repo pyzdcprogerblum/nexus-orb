@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10100f">
+<title>Карбонара - интерактивная методичка</title>
+<style>
+:root{
+  --bg:#10100f; --card:#191816; --card2:#22201d; --text:#f5f1e8; --muted:#bdb6a8;
+  --gold:#f3c96a; --cream:#fff0b8; --red:#c86d4f; --green:#82b27d; --line:#37332e;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+ radial-gradient(circle at 15% -10%,#3a2b1d 0,transparent 32rem),
+ radial-gradient(circle at 95% 15%,#33271d 0,transparent 28rem),var(--bg);
+ color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",sans-serif;line-height:1.45}
+main{max-width:980px;margin:auto;padding:20px 16px 90px}
+.hero{padding:18px 2px 8px}
+.kicker{color:var(--gold);font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.74rem}
+h1{font-size:clamp(2.25rem,9vw,5rem);line-height:.94;margin:.35rem 0 1rem;letter-spacing:-.055em}
+.lead{color:var(--muted);font-size:1.05rem;max-width:760px}
+.pillrow{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.pill{padding:8px 12px;background:#221f1a;border:1px solid var(--line);border-radius:999px;color:#ded6c6;font-size:.9rem}
+.card{background:linear-gradient(180deg,rgba(31,29,26,.96),rgba(23,22,20,.96));border:1px solid var(--line);border-radius:24px;padding:18px;margin:14px 0;box-shadow:0 18px 55px rgba(0,0,0,.25)}
+h2{font-size:1.45rem;margin:.1rem 0 1rem} h3{margin:.2rem 0 .45rem;font-size:1.06rem}
+.small{font-size:.9rem;color:var(--muted)}
+.ratio-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.ratio{background:#121211;border:1px solid #302d29;border-radius:18px;padding:14px;min-height:118px}
+.ratio b{font-size:1.12rem;display:block;margin:4px 0}.ratio .big{font-size:1.5rem;color:var(--cream);font-weight:850}
+.icon{font-size:1.7rem}
+.controls{background:#121211;border-radius:18px;padding:15px;border:1px solid #302d29;margin-top:12px}
+input[type=range]{width:100%;accent-color:var(--gold)}
+.bundle-wrap{height:82px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.bundle{width:120px;height:44px;position:relative;transform:rotate(-6deg)}
+.bundle span{position:absolute;left:0;right:0;height:2px;background:#e9c45e;border-radius:99px;box-shadow:0 1px 0 #9f7732}
+.bundle span:nth-child(1){top:5px;transform:rotate(2deg)}
+.bundle span:nth-child(2){top:11px;transform:rotate(-1deg)}
+.bundle span:nth-child(3){top:17px;transform:rotate(1deg)}
+.bundle span:nth-child(4){top:23px;transform:rotate(-2deg)}
+.bundle span:nth-child(5){top:29px;transform:rotate(.5deg)}
+.bundle span:nth-child(6){top:35px;transform:rotate(-1deg)}
+.bundle:after{content:"";position:absolute;left:48px;top:0;width:18px;height:43px;border:2px solid #d5b06e;border-radius:50%;opacity:.8}
+.equipment{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.eq{padding:11px 12px;background:#151412;border-radius:14px;border:1px solid #2c2925}
+.progress{height:8px;background:#2a2722;border-radius:99px;overflow:hidden;margin:13px 0 6px}
+.progress > div{height:100%;width:0;background:linear-gradient(90deg,#d6a84d,#ffe298);transition:width .45s ease}
+.step{display:none;animation:rise .35s ease}
+.step.active{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.step-top{display:flex;gap:14px;align-items:flex-start}
+.num{min-width:42px;height:42px;display:grid;place-items:center;border-radius:14px;background:var(--gold);color:#17130c;font-weight:900}
+.tip{margin:12px 0;padding:12px 14px;border-left:3px solid var(--gold);background:#151411;border-radius:0 14px 14px 0;color:#e4dccd}
+.danger{border-left-color:#e47d65}
+.svgbox{margin:12px 0;background:radial-gradient(circle at 50% 20%,#2e2922,#121211 70%);border:1px solid #302d29;border-radius:20px;height:230px;display:grid;place-items:center;overflow:hidden}
+svg{max-width:100%;height:210px}
+.steam{animation:steam 2.1s infinite ease-in-out;transform-origin:center}
+.steam.s2{animation-delay:.55s}.steam.s3{animation-delay:1.1s}
+@keyframes steam{0%{opacity:0;transform:translateY(20px) scale(.8)}45%{opacity:.8}100%{opacity:0;transform:translateY(-28px) scale(1.15)}}
+.sizzle{animation:sizzle .65s infinite alternate ease-in-out}
+@keyframes sizzle{to{transform:translateY(-2px) rotate(1deg)}}
+.whisk{animation:whisk .65s infinite alternate ease-in-out;transform-origin:180px 104px}
+@keyframes whisk{to{transform:rotate(10deg) translateX(6px)}}
+.toss{animation:toss 1.25s infinite ease-in-out;transform-origin:160px 160px}
+@keyframes toss{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-14px) rotate(-3deg)}}
+.btnrow{display:grid;grid-template-columns:1fr 1.4fr;gap:10px;margin-top:14px;position:sticky;bottom:10px;z-index:4}
+button{border:0;border-radius:16px;padding:14px 16px;font-size:1rem;font-weight:800}
+button.primary{background:var(--gold);color:#18130c}button.secondary{background:#2a2722;color:var(--text);border:1px solid #3d3933}
+button:disabled{opacity:.35}
+.checks{display:grid;gap:8px;margin-top:10px}.check{display:flex;gap:10px;align-items:flex-start;background:#151412;padding:10px;border-radius:12px}
+.check input{margin-top:3px;accent-color:var(--gold);transform:scale(1.2)}
+.timer{display:flex;align-items:center;justify-content:space-between;background:#151412;border:1px solid #302d29;border-radius:16px;padding:12px 14px;margin:10px 0}
+.timer strong{font-variant-numeric:tabular-nums;font-size:1.2rem;color:var(--cream)}
+.timer button{padding:8px 11px;border-radius:10px;background:#29251f;color:var(--text);font-size:.86rem}
+.mistakes{display:grid;gap:10px}.mistake{padding:13px;background:#161412;border:1px solid #322d28;border-radius:15px}
+.mistake b{color:#ffd793}
+.finish{display:none;text-align:center;padding:28px 8px}.finish.show{display:block;animation:rise .4s ease}
+.source a{color:#f0c66a;text-decoration:none}.source{font-size:.84rem;color:#9f978a}
+@media(min-width:720px){
+ .ratio-grid{grid-template-columns:repeat(4,1fr)} .equipment{grid-template-columns:repeat(4,1fr)}
+ .card{padding:24px}.step-top{gap:18px}
+}
+</style>
+</head>
+<body>
+<main>
+<section class="hero">
+<div class="kicker">Roman style • без сливок</div>
+<h1>Спагетти<br>карбонара</h1>
+<p class="lead">Методичка сделана именно для готовки «на глаз»: сначала выбираешь, сколько сухих спагетти тебе кажется нормальным, а всё остальное подстраиваешь по простым отношениям.</p>
+<div class="pillrow"><span class="pill">🍝 паста</span><span class="pill">🥓 guanciale</span><span class="pill">🥚 желтки</span><span class="pill">🧀 Pecorino Romano</span><span class="pill">⚫ чёрный перец</span></div>
+</section>
+
+<section class="card">
+<h2>1. Сколько брать - без весов</h2>
+<p class="small">Считай пасту «пучками». Один пучок - количество сухих спагетти, которое ты естественно зажимаешь пальцами для одной умеренной тарелки. Это не единица веса, а удобная визуальная база.</p>
+<div class="bundle-wrap"><div class="bundle"><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+<div class="controls">
+<label for="b">Сколько пучков пасты: <strong id="bundles">2</strong></label>
+<input id="b" type="range" min="1" max="6" value="2" step="1">
+<p class="small" style="margin-bottom:0">Двигай ползунок. Ниже изменятся ориентиры для яиц и сыра.</p>
+</div>
+<div class="ratio-grid" style="margin-top:12px">
+<div class="ratio"><span class="icon">🍝</span><b>Спагетти</b><div class="big"><span id="pastaOut">2</span> пучка</div><span class="small">это твоя база = 1 часть</span></div>
+<div class="ratio"><span class="icon">🥓</span><b>Guanciale</b><div class="big">≈ 1/2</div><span class="small">от массы пасты; визуально - щедро, но не 1:1</span></div>
+<div class="ratio"><span class="icon">🥚</span><b>Желтки</b><div class="big" id="yolkOut">3-4</div><span class="small">на выбранный объём пасты</span></div>
+<div class="ratio"><span class="icon">🧀</span><b>Pecorino</b><div class="big" id="cheeseOut">2 горсти</div><span class="small">небольшие горсти, мелко натёртые</span></div>
+</div>
+<div class="tip">Базовая пропорция по классическому рецепту GialloZafferano примерно такая: паста 1 : guanciale 0,47 : Pecorino 0,16 по массе, плюс много желтка. Здесь она переведена в кухонные ориентиры «на глаз».</div>
+</section>
+
+<section class="card">
+<h2>2. Что подготовить</h2>
+<div class="equipment">
+<div class="eq">🍲 большая кастрюля</div><div class="eq">🍳 широкая сковорода</div><div class="eq">🥣 миска для крема</div><div class="eq">🥢 щипцы / две вилки</div>
+</div>
+<div class="checks">
+<label class="check"><input type="checkbox"> <span><b>Guanciale</b><br><small class="small">лучше именно свиная щёка; pancetta или бекон - уже вариация</small></span></label>
+<label class="check"><input type="checkbox"> <span><b>Pecorino Romano</b><br><small class="small">мелко натереть заранее</small></span></label>
+<label class="check"><input type="checkbox"> <span><b>Свежий чёрный перец</b><br><small class="small">не символически - он часть вкуса</small></span></label>
+<label class="check"><input type="checkbox"> <span><b>Яйца</b><br><small class="small">используем желтки; белки можно оставить для другого блюда</small></span></label>
+</div>
+</section>
+
+<section class="card" id="cook">
+<div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><h2 style="margin:0">3. Готовим пошагово</h2><span class="small" id="stepCount">1 / 7</span></div>
+<div class="progress"><div id="prog"></div></div>
+
+<div class="step active">
+<div class="step-top"><div class="num">1</div><div><h3>Поставь воду и подготовь guanciale</h3><p>Воду доведи до кипения и посоли <b>умереннее обычного</b>: Pecorino и guanciale сами солёные. Guanciale нарежь брусочками.</p></div></div>
+<div class="svgbox">
+<svg viewBox="0 0 360 220" aria-label="Кастрюля с кипящей водой">
+<path d="M105 90h150l-12 92H117z" fill="#77736c"/><path d="M116 105h128l-7 69H123z" fill="#242c31"/>
+<ellipse cx="180" cy="101" rx="65" ry="13" fill="#8cb7c5" opacity=".75"/>
+<path d="M89 108H62M271 108h27" stroke="#77736c" stroke-width="13" stroke-linecap="round"/>
+<path class="steam" d="M145 82c-16-18 12-26 0-45" fill="none" stroke="#ddd1bd" stroke-width="5" stroke-linecap="round"/>
+<path class="steam s2" d="M180 82c-14-18 14-30 1-50" fill="none" stroke="#ddd1bd" stroke-width="5" stroke-linecap="round"/>
+<path class="steam s3" d="M215 82c-15-20 12-25 1-44" fill="none" stroke="#ddd1bd" stroke-width="5" stroke-linecap="round"/>
+</svg></div>
+<div class="tip">Не добавляй масло в воду и не лей масло на пасту после варки.</div>
+</div>
+
+<div class="step">
+<div class="step-top"><div class="num">2</div><div><h3>Вытопи guanciale</h3><p>Положи его на <b>холодную или едва тёплую сухую сковороду</b>, затем подними до среднего огня. Жир должен спокойно вытопиться, а края - стать золотистыми.</p></div></div>
+<div class="svgbox">
+<svg viewBox="0 0 360 220">
+<ellipse cx="182" cy="168" rx="112" ry="25" fill="#4c4a46"/><path d="M75 137q105 35 215 0l-16 35q-93 38-184 0z" fill="#292827"/>
+<g class="sizzle"><rect x="128" y="117" width="33" height="22" rx="6" fill="#b95d44"/><rect x="166" y="126" width="36" height="21" rx="6" fill="#d37a54"/><rect x="207" y="113" width="31" height="23" rx="6" fill="#a94e39"/><path d="M142 112q-8-10 0-18M184 119q-8-11 0-19M221 106q-7-10 1-18" stroke="#f3c96a" stroke-width="3" fill="none"/></g>
+<path d="M289 145h58" stroke="#6c6962" stroke-width="16" stroke-linecap="round"/>
+</svg></div>
+<div class="timer"><span>Ориентир: медленно вытопить</span><strong data-min="8">08:00</strong><button onclick="toggleTimer(this)">Старт</button></div>
+<div class="tip">Масло не нужно: нужный жир уже выйдет из guanciale. Не сжигай его до сухого хруста.</div>
+</div>
+
+<div class="step">
+<div class="step-top"><div class="num">3</div><div><h3>Смешай желтки + Pecorino + перец</h3><p>В миске разотри желтки с сыром и щедрым свежемолотым перцем до густой пасты. Если она совсем сухая - добавь <b>чуть-чуть</b> будущей воды от пасты, не половник сразу.</p></div></div>
+<div class="svgbox">
+<svg viewBox="0 0 360 220">
+<ellipse cx="170" cy="145" rx="90" ry="42" fill="#ebe0bc"/><path d="M82 145q18 68 88 68t88-68" fill="#bcb198"/><ellipse cx="170" cy="141" rx="82" ry="34" fill="#f4cf63"/>
+<g class="whisk"><path d="M179 105l74-62" stroke="#c8c7c3" stroke-width="8" stroke-linecap="round"/><path d="M178 108q-36 25-10 44q25 8 33-18q-6-24-23-26z" fill="none" stroke="#c8c7c3" stroke-width="4"/></g>
+<circle cx="130" cy="132" r="2.4"/><circle cx="148" cy="153" r="2.2"/><circle cx="205" cy="132" r="2.6"/><circle cx="220" cy="151" r="2.2"/>
+</svg></div>
+<div class="tip">Крем должен быть густым. Жидким его сделает не сырое яйцо, а эмульсия с жиром и крахмальной водой.</div>
+</div>
+
+<div class="step">
+<div class="step-top"><div class="num">4</div><div><h3>Свари спагетти al dente</h3><p>Вари по времени на пачке, но начни пробовать немного раньше. Перед сливом обязательно оставь кружку мутной крахмальной воды.</p></div></div>
+<div class="svgbox">
+<svg viewBox="0 0 360 220">
+<path d="M105 95h150l-12 88H117z" fill="#6e6a64"/><ellipse cx="180" cy="103" rx="66" ry="14" fill="#8eb8c7"/>
+<g class="toss" stroke="#e8c35d" stroke-width="4" fill="none" stroke-linecap="round">
+<path d="M145 60q-8 46 5 101"/><path d="M161 53q-2 55 6 109"/><path d="M178 48q8 60 3 114"/><path d="M195 52q10 52 2 108"/><path d="M211 61q7 44 1 99"/></g>
+</svg></div>
+<div class="tip">Эта вода - твой регулятор консистенции. Без неё соус сложнее сделать шелковистым.</div>
+</div>
+
+<div class="step">
+<div class="step-top"><div class="num">5</div><div><h3>Соедини пасту с жиром guanciale</h3><p>Готовый guanciale временно вынь, жир оставь. Переложи горячую пасту в сковороду, добавь немного воды от пасты и быстро перемешай.</p></div></div>
+<div class="svgbox">
+<svg viewBox="0 0 360 220">
+<ellipse cx="175" cy="165" rx="120" ry="28" fill="#4d4a45"/><path d="M62 140q110 38 226 0l-16 37q-96 36-194 0z" fill="#2b2927"/>
+<g class="toss" fill="none" stroke="#e6bf58" stroke-width="5" stroke-linecap="round">
+<path d="M108 143q61-70 138 2"/><path d="M110 150q66-58 132 2"/><path d="M120 157q55-45 112-3"/></g>
+<path d="M286 148h66" stroke="#77736c" stroke-width="15" stroke-linecap="round"/>
+</svg></div>
+<div class="tip">Наша цель сейчас - покрыть пасту ароматным жиром и начать эмульсию, а не жарить спагетти.</div>
+</div>
+
+<div class="step">
+<div class="step-top"><div class="num">6</div><div><h3>Главный момент: яйца только БЕЗ огня</h3><p><b>Сними сковороду с конфорки.</b> Подожди несколько секунд, затем влей желтково-сырную смесь и очень быстро мешай/подбрасывай пасту. По чуть-чуть добавляй воду от пасты, пока соус не станет блестящим и текучим.</p></div></div>
+<div class="svgbox">
+<svg viewBox="0 0 360 220">
+<ellipse cx="178" cy="165" rx="118" ry="28" fill="#4c4944"/><path d="M66 141q109 38 222 0l-17 37q-94 35-190 0z" fill="#2b2927"/>
+<g class="toss" fill="none" stroke="#f1cc67" stroke-width="7" stroke-linecap="round">
+<path d="M112 147q52-60 126-5"/><path d="M118 154q55-48 116-2"/><path d="M130 161q47-35 95-5"/></g>
+<path d="M287 149h64" stroke="#77736c" stroke-width="15" stroke-linecap="round"/>
+<circle cx="118" cy="119" r="3" fill="#fff0b8"/><circle cx="149" cy="111" r="2.5" fill="#fff0b8"/><circle cx="211" cy="114" r="3" fill="#fff0b8"/>
+</svg></div>
+<div class="tip danger"><b>Если слышишь активное шипение после добавления яиц - слишком горячо.</b> Немедленно убери сковороду дальше от плиты и добавь немного воды от пасты, продолжая мешать.</div>
+</div>
+
+<div class="step">
+<div class="step-top"><div class="num">7</div><div><h3>Верни guanciale и подавай сразу</h3><p>Вмешай большую часть guanciale. Разложи по тарелкам, сверху - оставшийся guanciale, Pecorino и ещё чёрный перец. Соус должен быть кремовым, но не стоять комком.</p></div></div>
+<div class="svgbox">
+<svg viewBox="0 0 360 220">
+<ellipse cx="180" cy="161" rx="118" ry="38" fill="#ded7c9"/><ellipse cx="180" cy="157" rx="92" ry="27" fill="#efe7d9"/>
+<g class="toss" fill="none" stroke="#e4bc54" stroke-width="7" stroke-linecap="round">
+<path d="M125 161q52-73 110 1"/><path d="M128 165q52-58 105 0"/><path d="M138 169q42-43 86-1"/></g>
+<rect x="134" y="135" width="20" height="13" rx="4" fill="#b85d45"/><rect x="195" y="142" width="22" height="13" rx="4" fill="#c96f50"/><rect x="174" y="125" width="20" height="12" rx="4" fill="#a84c38"/>
+<g fill="#2d2924"><circle cx="151" cy="126" r="2"/><circle cx="208" cy="126" r="2"/><circle cx="224" cy="154" r="2"/><circle cx="170" cy="153" r="2"/></g>
+</svg></div>
+<div class="tip">Carbonara не любит ждать: через несколько минут соус начнёт густеть. На стол - сразу.</div>
+</div>
+
+<div class="finish" id="finish">
+<div style="font-size:3rem">🍝</div><h2>Готово</h2><p class="small">Запомни формулу: вытопил жир → сделал густой желтково-сырный крем → оставил крахмальную воду → смешал всё вне огня.</p>
+</div>
+
+<div class="btnrow"><button class="secondary" id="prev" onclick="move(-1)" disabled>← Назад</button><button class="primary" id="next" onclick="move(1)">Дальше →</button></div>
+</section>
+
+<section class="card">
+<h2>4. Три признака правильной карбонары</h2>
+<div class="mistakes">
+<div class="mistake"><b>Соус блестит и обволакивает</b><br><span class="small">Он не похож ни на сливки, ни на яичницу.</span></div>
+<div class="mistake"><b>На тарелке нет лужи</b><br><span class="small">Но паста и не сухая: соус плавно тянется за спагетти.</span></div>
+<div class="mistake"><b>Вкус балансирует жир, сыр и перец</b><br><span class="small">Если слишком солёно - в следующий раз слабее соли воду, не уменьшай Pecorino первым делом.</span></div>
+</div>
+</section>
+
+<section class="card">
+<h2>5. Если что-то пошло не так</h2>
+<div class="mistakes">
+<div class="mistake"><b>Получилась яичница</b><br><span class="small">Причина: яйца попали на активный огонь или в слишком горячую сковороду.</span></div>
+<div class="mistake"><b>Слишком густо и липко</b><br><span class="small">Добавляй крахмальную воду по ложке и активно мешай.</span></div>
+<div class="mistake"><b>Слишком жидко</b><br><span class="small">Продолжай интенсивно перемешивать. Если совсем жидко - добавь чуть Pecorino, а не возвращай на сильный огонь.</span></div>
+<div class="mistake"><b>Нет guanciale</b><br><span class="small">Можно взять pancetta или хороший бекон, но вкус будет другой - это уже не строгая римская версия.</span></div>
+</div>
+</section>
+
+<section class="card source">
+<b>На чём основана методичка</b><br>
+Классическая техника: GialloZafferano - желтки + Pecorino + перец, guanciale вытапливается отдельно, яйца вводятся после снятия с огня, консистенция регулируется водой от пасты. La Cucina Italiana подтверждает тот же принцип и подчёркивает, что смесь нельзя готовить на активном огне.<br><br>
+<a href="https://www.giallozafferano.com/recipes/Spaghetti-Carbonara-Bacon-and-egg-spaghetti.html">GialloZafferano: Spaghetti Carbonara</a><br>
+<a href="https://www.lacucinaitaliana.com/italian-food/how-to-cook/how-to-make-original-carbonara">La Cucina Italiana: Classic Carbonara</a>
+</section>
+</main>
+<script>
+const slider=document.getElementById('b');
+function plural(n, one, few, many){let n10=n%10,n100=n%100;if(n10===1&&n100!==11)return one;if(n10>=2&&n10<=4&&(n100<12||n100>14))return few;return many}
+function updateRatio(){
+ const n=+slider.value;
+ document.getElementById('bundles').textContent=n;
+ document.getElementById('pastaOut').textContent=n;
+ const lo=Math.max(1,Math.floor(n*1.5)), hi=Math.max(lo,Math.ceil(n*1.8));
+ document.getElementById('yolkOut').textContent=lo===hi?lo:`${lo}-${hi}`;
+ document.getElementById('cheeseOut').textContent=n+" "+plural(n,"горсть","горсти","горстей");
+}
+slider.addEventListener('input',updateRatio); updateRatio();
+
+let i=0; const steps=[...document.querySelectorAll('.step')], total=steps.length;
+function render(){
+ steps.forEach((s,k)=>s.classList.toggle('active',k===i));
+ document.getElementById('stepCount').textContent=(i+1)+" / "+total;
+ document.getElementById('prog').style.width=((i+1)/total*100)+"%";
+ document.getElementById('prev').disabled=i===0;
+ const next=document.getElementById('next');
+ next.textContent=i===total-1?"Готово ✓":"Дальше →";
+ document.getElementById('finish').classList.remove('show');
+}
+function move(d){
+ if(i===total-1 && d>0){document.getElementById('finish').classList.add('show'); document.getElementById('next').disabled=true; return}
+ i=Math.min(total-1,Math.max(0,i+d)); document.getElementById('next').disabled=false;render();
+ document.getElementById('cook').scrollIntoView({behavior:'smooth',block:'start'});
+}
+render();
+
+const timers=new WeakMap();
+function toggleTimer(btn){
+ const strong=btn.parentElement.querySelector('strong');
+ if(timers.has(btn)){clearInterval(timers.get(btn));timers.delete(btn);btn.textContent='Старт';return}
+ let parts=strong.textContent.split(':').map(Number), sec=parts[0]*60+parts[1];
+ btn.textContent='Пауза';
+ const id=setInterval(()=>{sec--;if(sec<=0){clearInterval(id);timers.delete(btn);strong.textContent='00:00';btn.textContent='Готово';navigator.vibrate&&navigator.vibrate([120,80,120]);return}
+ strong.textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0');
+ },1000);timers.set(btn,id);
+}
+</script>
+</body></html>
